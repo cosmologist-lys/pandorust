@@ -1,7 +1,5 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 
-use std::path::PathBuf;
-use log::error;
 use pandorust_core::components::RpcResponse;
 use quick_find_core::QuickFindRespond;
 

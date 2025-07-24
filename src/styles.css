@@ -1,112 +1,258 @@
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #ffe21c);
-}
+/* --- 颜色变量定义 --- */
+
+/* 默认 (暗色主题) */
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
+    --primary-color: #6366f1;
+    --primary-hover-color: #4f46e5;
+    --background-color: #111827;
+    --container-bg-color: #1f2937;
+    --input-bg-color: #374151;
+    --text-color: #e5e7eb;
+    --secondary-text-color: #9ca3af;
+    --border-color: #4b5563;
+    --success-color: #34d399;
+    --error-color: #f87171;
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
 
-  color: #0f0f0f;
-  background-color: #f6f6f6;
+/* 亮色主题变量 */
+body.light-theme {
+    --primary-color: #4f46e5;
+    --primary-hover-color: #4338ca;
+    --background-color: #f3f4f6;
+    --container-bg-color: #ffffff;
+    --input-bg-color: #ffffff; /* 亮色模式下输入框也是白色 */
+    --text-color: #1f2937;
+    --secondary-text-color: #6b7280;
+    --border-color: #d1d5db;
+    --success-color: #10b981;
+    --error-color: #ef4444;
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+/* --- 基础和布局样式 (这些样式在两种主题下通用) --- */
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
-  margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+    width: 90%;
+    background-color: var(--container-bg-color);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+/* 亮色模式下阴影更明显 */
+body.light-theme .container {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+/* 暗色模式下阴影更柔和 */
+body:not(.light-theme) .container {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
-}
 
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
+h1 {
+    font-size: 2.25rem;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
 }
 
 .row {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+input {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s ease;
 }
 
-a:hover {
-  color: #535bf2;
+input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 30%, transparent);
 }
 
-h1 {
-  text-align: center;
+#search-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
 }
 
-input,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+#search-btn:hover {
+    background-color: var(--primary-hover-color);
 }
 
-button {
-  cursor: pointer;
+#search-btn:disabled {
+    background-color: #4b5563;
+    color: #9ca3af;
+    cursor: not-allowed;
 }
 
-button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
-}
-
-input,
-button {
-  outline: none;
-}
-
-#greet-input {
-  margin-right: 5px;
+#reset-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--secondary-text-color);
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
-  }
+#reset-btn:hover {
+    color: var(--text-color);
+    border-color: var(--secondary-text-color);
+}
 
-  a:hover {
-    color: #24c8db;
-  }
+#summary-output {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--secondary-text-color);
+    min-height: 1.5em;
+    text-align: left;
+    transition: color 0.3s ease;
+}
 
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-  button:active {
-    background-color: #0f0f0f69;
-  }
+.results-container {
+    background-color: var(--background-color);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    height: 40vh;
+    overflow-y: auto;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#results-output {
+    padding: 1rem;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+    margin: 0;
+    color: var(--text-color);
+}
+
+/* --- 新增：主题切换按钮样式 --- */
+#theme-toggle-btn {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    background-color: var(--container-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50%; /* 圆形按钮 */
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+#theme-toggle-btn:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.1) rotate(15deg);
+}
+
+#theme-toggle-btn svg {
+    color: var(--secondary-text-color);
+    transition: all 0.3s ease;
+}
+#theme-toggle-btn:hover svg {
+    color: var(--primary-color);
+}
+
+/* 默认显示月亮，隐藏太阳 */
+.sun-icon {
+    display: none;
+}
+.moon-icon {
+    display: block;
+}
+
+/* 亮色模式下，显示太阳，隐藏月亮 */
+body.light-theme .sun-icon {
+    display: block;
+}
+body.light-theme .moon-icon {
+    display: none;
+}
+
+/* --- 新增：处理浏览器自动填充样式，确保主题统一 --- */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    /* 使用一个巨大的内阴影来覆盖浏览器默认的自动填充背景色 */
+    /* 这是目前最可靠的跨浏览器技巧 */
+    box-shadow: 0 0 0 1000px var(--input-bg-color) inset !important;
+
+    /* 强制设置自动填充的文本颜色 */
+    -webkit-text-fill-color: var(--text-color) !important;
+
+    /* 保持我们自定义的边框颜色 */
+    border-color: var(--border-color) !important;
+
+    /* 防止在填充时出现短暂的颜色过渡动画 */
+    transition: background-color 5000s ease-in-out 0s;
+
+
+}
+
+/* --- 新增：自定义滚动条样式，适配主题 --- */
+
+/* 目标为结果容器内的滚动条 */
+.results-container::-webkit-scrollbar {
+    width: 12px; /* 设置滚动条的宽度 */
+}
+
+/* 滚动条轨道 (背景) */
+.results-container::-webkit-scrollbar-track {
+    background: var(--background-color); /* 使用页面主背景色作为轨道背景 */
+    border-radius: 10px;
+}
+
+/* 滚动条滑块 (可以拖动的那个方块) */
+.results-container::-webkit-scrollbar-thumb {
+    background-color: var(--border-color); /* 使用边框颜色作为滑块颜色，低调且和谐 */
+    border-radius: 10px;
+    border: 3px solid var(--background-color); /* 创建一个内边距效果，让滑块看起来更细 */
+}
+
+/* 鼠标悬浮在滑块上时的样式 */
+.results-container::-webkit-scrollbar-thumb:hover {
+    background-color: var(--secondary-text-color); /* 悬浮时颜色变亮，提供反馈 */
 }
