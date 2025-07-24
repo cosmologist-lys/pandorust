@@ -1,4 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
+// 新增：从 Tauri API 中导入 shell.open 和 path.dirname
+import { revealItemInDir } from "@tauri-apps/plugin-opener";
 
 // --- DOM 元素获取 ---
 const pathInput = document.getElementById("path-input") as HTMLInputElement;
@@ -6,33 +8,37 @@ const patternInput = document.getElementById("pattern-input") as HTMLInputElemen
 const searchBtn = document.getElementById("search-btn") as HTMLButtonElement;
 const resetBtn = document.getElementById("reset-btn") as HTMLButtonElement;
 const summaryOutput = document.getElementById("summary-output") as HTMLDivElement;
-const resultsOutput = document.getElementById("results-output") as HTMLPreElement;
-// 新增：获取主题切换按钮
+// 注意：现在 resultsOutput 是一个 Div 元素
+const resultsOutput = document.getElementById("results-output") as HTMLDivElement;
 const themeToggleBtn = document.getElementById("theme-toggle-btn") as HTMLButtonElement;
 
-// --- 类型定义 ---
+// --- 类型定义 (无变化) ---
 interface RpcResponse<T> {
     status: number;
     data: T;
     error: string | null;
 }
-
 interface QuickFindRespond {
     vec: string[];
     count: number;
     spent_millis: number;
 }
 
+// --- SVG 图标 ---
+// 我们将文件夹图标的 SVG 定义为一个常量，方便复用
+const FOLDER_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`;
+
+
 // --- 功能函数 ---
 
-// 清理 UI 显示
+// 修改：清理结果时，使用 innerHTML
 const clearResults = () => {
     summaryOutput.textContent = "";
-    resultsOutput.textContent = "";
+    // 使用 innerHTML = '' 清空所有动态创建的子元素
+    resultsOutput.innerHTML = '';
     summaryOutput.style.color = 'var(--secondary-text-color)';
 };
 
-// 重置所有输入和输出
 const resetAll = () => {
     pathInput.value = "";
     patternInput.value = "";
@@ -40,7 +46,6 @@ const resetAll = () => {
     pathInput.focus();
 };
 
-// 搜索功能的实现
 const performSearch = async () => {
     if (searchBtn.disabled) return;
 
@@ -50,7 +55,7 @@ const performSearch = async () => {
     if (!rootPath || !globPattern) {
         summaryOutput.style.color = 'var(--error-color)';
         summaryOutput.textContent = "错误: 搜索路径和 Glob 模式不能为空。";
-        resultsOutput.textContent = "";
+        resultsOutput.innerHTML = "";
         return;
     }
 
@@ -72,12 +77,54 @@ const performSearch = async () => {
             const data = results.data;
             summaryOutput.style.color = 'var(--success-color)';
             summaryOutput.textContent = `查找完毕！共找到 ${data.count} 个匹配项，耗时 ${data.spent_millis} 毫秒。`;
-            resultsOutput.textContent = data.vec.length > 0 ? data.vec.join("\n") : "未找到任何文件。";
+
+            // --- 核心改动：动态创建结果列表 ---
+            if (data.vec.length === 0) {
+                resultsOutput.textContent = "未找到任何文件。";
+            } else {
+                // 遍历每一个文件路径
+                for (const filePath of data.vec) {
+                    // 1. 创建容器 div
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'result-item';
+
+                    // 2. 创建路径文本 span
+                    const pathSpan = document.createElement('span');
+                    pathSpan.className = 'path-text';
+                    pathSpan.textContent = filePath;
+                    pathSpan.title = filePath; // 鼠标悬浮时显示完整路径
+
+                    // 3. 创建 "打开文件夹" 按钮
+                    const openBtn = document.createElement('button');
+                    openBtn.className = 'open-folder-btn';
+                    openBtn.innerHTML = FOLDER_ICON_SVG; // 设置图标
+
+                    // 4. 为按钮绑定点击事件
+                    // 新的、正确且简单的方式
+                    openBtn.addEventListener('click', async () => {
+                        try {
+                            // 直接调用 reveal，它会自动打开文件夹并选中文件
+                            await revealItemInDir(filePath);
+                        } catch (e) {
+                            console.error(`无法在文件夹中显示: ${filePath}`, e);
+                            summaryOutput.style.color = 'var(--error-color)';
+                            summaryOutput.textContent = `错误：无法定位文件 ${filePath}`;
+                        }
+                    });
+
+                    // 5. 将文本和按钮添加到容器 div 中
+                    itemDiv.appendChild(pathSpan);
+                    itemDiv.appendChild(openBtn);
+
+                    // 6. 将完整的列表项添加到结果区域
+                    resultsOutput.appendChild(itemDiv);
+                }
+            }
         }
     } catch (error) {
         summaryOutput.style.color = 'var(--error-color)';
         summaryOutput.textContent = `发生严重错误，请检查控制台。`;
-        resultsOutput.textContent = `${error}`;
+        resultsOutput.innerHTML = `${error}`;
         console.error("Invoke error:", error);
     } finally {
         searchBtn.disabled = false;
@@ -85,15 +132,9 @@ const performSearch = async () => {
     }
 };
 
-// --- 事件监听器绑定 ---
-
-// 搜索按钮
+// --- 事件监听器绑定 (这部分代码保持不变) ---
 searchBtn.addEventListener("click", performSearch);
-
-// 重置按钮
 resetBtn.addEventListener("click", resetAll);
-
-// 回车键
 const handleEnterKey = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
         event.preventDefault();
@@ -102,18 +143,14 @@ const handleEnterKey = (event: KeyboardEvent) => {
 };
 pathInput.addEventListener("keyup", handleEnterKey);
 patternInput.addEventListener("keyup", handleEnterKey);
-
-// 页面加载时，立即应用保存的主题
+// 主题切换 (持久化版本)
 document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme') || 'dark'; // 默认为 dark
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     if (savedTheme === 'light') {
         document.body.classList.add('light-theme');
     }
 });
-
-// 主题切换按钮点击事件
 themeToggleBtn.addEventListener("click", () => {
     const isLight = document.body.classList.toggle("light-theme");
-    // 将新的主题选择保存到 localStorage
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
 });
