@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri App</title>
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
+
+  <body>
+  <div class="container">
+      <h1>Quick Find</h1>
+
+      <div class="row">
+          <input id="path-input" placeholder="搜索路径 (例如: D:\)" />
+          <input id="pattern-input" placeholder="Glob 模式 (例如: *.log)" />
+          <button id="search-btn">搜索</button>
+      </div>
+
+      <div class="results-container">
+          <pre id="results-output"></pre>
+      </div>
+
+  </div>
+  </body>
+</html>

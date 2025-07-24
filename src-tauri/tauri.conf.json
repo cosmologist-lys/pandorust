@@ -3,9 +3,6 @@
   "productName": "pandorust",
   "version": "0.1.0",
   "identifier": "com.lxm.pandorust",
-  "build": {
-    "frontendDist": "../src"
-  },
   "app": {
     "withGlobalTauri": true,
     "windows": [
@@ -18,6 +15,12 @@
     "security": {
       "csp": null
     }
+  },
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
   "bundle": {
     "active": true,
