@@ -14,7 +14,6 @@ pub fn run() {
 
 #[tauri::command]
 async fn quick_find_search(root_path: String, glob_pattern: String) -> RpcResponse<QuickFindRespond> {
-    println!("into back-end , args : {root_path} , {glob_pattern}");
     let search_result =
         tokio::task::spawn_blocking(move || quick_find_core::search(&root_path, &glob_pattern))
             .await
