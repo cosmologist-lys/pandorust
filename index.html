@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/styles/main.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pandorust</title>
     <script type="module" src="/src/main.ts" defer></script>
@@ -18,49 +18,28 @@
             </button>
         </div>
         <ul class="nav-list">
-            <li class="nav-item active" data-page="quick-find">
-                <a href="#">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <li class="nav-item" data-navigo>
+                <a href="/quick-find">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     <span class="nav-label">Quick Find</span>
                 </a>
             </li>
-            <li class="nav-item" data-page="new-feature">
-                <a href="#">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path><line x1="12" y1="22" x2="12" y2="12"></line></svg>
-                    <span class="nav-label">New Feature</span>
+            <li class="nav-item" data-navigo>
+                <a href="/project-cleanser">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path><line x1="12" y1="22" x2="12" y2="12"></line></svg>
+                    <span class="nav-label">Project Cleanser</span>
                 </a>
             </li>
         </ul>
     </nav>
 
-    <main id="main-content">
-        <div id="page-quick-find" class="page-content">
-            <div class="container">
-                <h1>Quick Find</h1>
-                <div class="row">
-                    <input id="path-input" placeholder="搜索路径 (例如: D:\)" />
-                    <input id="pattern-input" placeholder="Glob 模式 (例如: *.log)" />
-                    <button id="search-btn">搜索</button>
-                    <button id="reset-btn">重置</button>
-                </div>
-                <div id="summary-output"></div>
-                <div class="results-container">
-                    <div id="results-output"></div>
-                </div>
-            </div>
-        </div>
-        <div id="page-new-feature" class="page-content" style="display: none;">
-            <div class="container">
-                <h1>A New Amazing Feature</h1>
-                <p>The UI for the new feature will be here.</p>
-            </div>
-        </div>
-    </main>
+    <main id="main-content"></main>
 </div>
 
 <button id="theme-toggle-btn">
     <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
     <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+</button>
 </button>
 </body>
 </html>

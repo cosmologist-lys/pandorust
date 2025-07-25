@@ -257,9 +257,67 @@ input:focus {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 #results-output { padding: 0.5rem; }
-.result-item, .result-item:hover, .path-text, .result-item:hover .path-text, .open-folder-btn, .result-item:hover .open-folder-btn, .open-folder-btn:hover, .open-folder-btn svg, .open-folder-btn:hover svg {
-    /* 之前所有这些样式都保持不变 */
-    /* ... 为了简洁省略，它们在您提供的代码中是完整的 ... */
+.result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 让文本和按钮分布在两端 */
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+/* 路径文本样式 */
+.path-text {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+    /* 防止长路径撑破容器 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 超出部分显示省略号 */
+    cursor: text; /* 鼠标样式为文本，方便复制 */
+}
+.result-item:hover .path-text {
+    color: var(--text-color); /* 悬浮时文本更亮 */
+}
+
+/* 鼠标悬浮在整行上时，给一个背景色反馈 */
+.result-item:hover {
+    background-color: color-mix(in srgb, var(--container-bg-color) 50%, var(--background-color));
+}
+
+/* “打开文件夹”按钮 */
+.open-folder-btn {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    margin-left: 1rem; /* 与文本保持间距 */
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6; /* 默认状态下半透明 */
+    transition: all 0.2s ease;
+}
+
+.result-item:hover .open-folder-btn {
+    opacity: 1; /* 行悬浮时，按钮完全显示 */
+}
+
+.open-folder-btn:hover {
+    background-color: var(--primary-color); /* 按钮悬浮时，给一个背景色 */
+}
+
+.open-folder-btn svg {
+    width: 18px;
+    height: 18px;
+    color: var(--secondary-text-color);
+    transition: color 0.2s ease;
+}
+
+.open-folder-btn:hover svg {
+    color: white; /* 按钮悬浮时，图标变白 */
 }
 
 /* --- 全局主题按钮样式 (保持不变) --- */
