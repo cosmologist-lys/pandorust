@@ -46,6 +46,24 @@ const resetAll = () => {
     pathInput.focus();
 };
 
+const convert_millis = (millis: number) => {
+    if (millis < 1000) {
+        return `${millis}毫秒`;
+    }
+
+    const seconds = Math.floor(millis / 1000);
+    const remainingMillis = millis % 1000;
+
+    if (seconds < 60) {
+        return `${seconds}.${remainingMillis}秒`;
+    }
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${minutes}分${remainingSeconds}.${remainingMillis}秒`;
+};
+
 const performSearch = async () => {
     if (searchBtn.disabled) return;
 
@@ -76,7 +94,8 @@ const performSearch = async () => {
         } else {
             const data = results.data;
             summaryOutput.style.color = 'var(--success-color)';
-            summaryOutput.textContent = `查找完毕！共找到 ${data.count} 个匹配项，耗时 ${data.spent_millis} 毫秒。`;
+            const time_spent: string = convert_millis(data.spent_millis);
+            summaryOutput.textContent = `查找完毕！共找到 ${data.count} 个匹配项，耗时 ${time_spent} 。`;
 
             // --- 核心改动：动态创建结果列表 ---
             if (data.vec.length === 0) {
