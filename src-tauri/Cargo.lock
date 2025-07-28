@@ -481,8 +481,10 @@ checksum = "c469d952047f47f91b68d1cba3f10d63c11d73e4636f24f08daf0278abf01c4d"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
+ "js-sys",
  "num-traits",
  "serde",
+ "wasm-bindgen",
  "windows-link",
 ]
 
@@ -1524,6 +1526,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6dbf3de79e51f3d586ab4cb9d5c3e2c14aa28ed23d180cf89b4df0454a69cc87"
 
 [[package]]
+name = "humansize"
+version = "2.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6cb51c9a029ddc91b07a787f1d86b53ccfa49b0e86688c946ebe8d3555685dd7"
+dependencies = [
+ "libm",
+]
+
+[[package]]
 name = "hyper"
 version = "1.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1951,6 +1962,12 @@ dependencies = [
  "cfg-if",
  "winapi",
 ]
+
+[[package]]
+name = "libm"
+version = "0.2.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f9fbbcab51052fe104eb5e5d351cf728d30a5be1fe14d9be8a3b097481fb97de"
 
 [[package]]
 name = "libredox"
@@ -2445,6 +2462,7 @@ version = "0.1.0"
 dependencies = [
  "log",
  "pandorust-core",
+ "project-cleanser",
  "quick-find-core",
  "serde",
  "serde_json",
@@ -2699,7 +2717,7 @@ checksum = "3af6b589e163c5a788fab00ce0c0366f6efbb9959c2f9874b224936af7fce7e1"
 dependencies = [
  "base64 0.22.1",
  "indexmap 2.10.0",
- "quick-xml",
+ "quick-xml 0.38.0",
  "serde",
  "time",
 ]
@@ -2829,12 +2847,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "project-cleanser"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "humansize",
+ "jwalk",
+ "pandorust-core",
+ "quick-xml 0.30.0",
+ "serde",
+]
+
+[[package]]
 name = "quick-find-core"
 version = "0.1.0"
 dependencies = [
  "glob",
  "jwalk",
  "pandorust-core",
+ "serde",
+]
+
+[[package]]
+name = "quick-xml"
+version = "0.30.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eff6510e86862b57b210fd8cbe8ed3f0d7d600b9c2863cd4549a2e033c66e956"
+dependencies = [
+ "memchr",
  "serde",
 ]
 
