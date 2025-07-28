@@ -1,0 +1,110 @@
+/* --- Project Cleanser 页面专属样式 --- */
+
+/* 使 setup-row 中的选择器和按钮宽度更合理 */
+.setup-row #browse-btn,
+.setup-row #project-type-selector {
+    flex-shrink: 0;
+}
+.setup-row #scan-path-input {
+    cursor: default; /* 因为只读，所以改变鼠标指针 */
+}
+.setup-row #project-type-selector {
+    padding: 0 1rem;
+    font-size: 1rem;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    outline: none;
+}
+
+
+/* 总结区域布局 */
+.summary-row {
+    justify-content: space-between;
+    align-items: center;
+}
+.summary-text {
+    text-align: left;
+    color: var(--secondary-text-color);
+}
+.summary-text p {
+    margin: 0.2rem 0;
+}
+.selection-details {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+/* 清理按钮的特殊样式（危险操作）*/
+#clean-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+    color: white;
+    background-color: var(--error-color);
+    border: none;
+    transition: all 0.2s ease;
+}
+#clean-btn:hover:not(:disabled) {
+    opacity: 0.8;
+}
+#clean-btn:disabled {
+    background-color: #4b5563;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* 结果表格样式 */
+.results-table-container {
+    height: 60vh;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--background-color);
+}
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+.results-table th, .results-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+.results-table th {
+    background-color: var(--container-bg-color);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* 定义列宽 */
+.col-checkbox { width: 5%; }
+.col-path { width: 45%; }
+.col-size { width: 15%; text-align: right; }
+.col-type { width: 10%; }
+.col-modified { width: 15%; }
+.col-actions { width: 10%; text-align: center; }
+
+.results-table td {
+    color: var(--secondary-text-color);
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+}
+.results-table tbody tr:hover {
+    background-color: color-mix(in srgb, var(--container-bg-color) 50%, var(--background-color));
+}
+.results-table .path-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px; /* 防止路径过长 */
+}
+.results-table .actions-cell .action-btn {
+    /* 这个按钮可以复用 quick-find 的 .open-folder-btn 样式 */
+    /* 我们在全局 main.css 里定义它 */
+}

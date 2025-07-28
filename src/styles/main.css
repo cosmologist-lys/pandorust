@@ -1,11 +1,7 @@
 /* --- 颜色变量定义 --- */
-
-/* 默认 (暗色主题) */
 :root {
-    /* 新增：侧边栏宽度变量 */
     --sidebar-width-expanded: 220px;
     --sidebar-width-collapsed: 60px;
-
     --primary-color: #6366f1;
     --primary-hover-color: #4f46e5;
     --background-color: #111827;
@@ -33,38 +29,24 @@ body.light-theme {
     --error-color: #ef4444;
 }
 
-/* --- 新的全局布局 --- */
+/* --- 全局布局 --- */
 body {
     margin: 0;
     font-family: var(--font-family);
     background-color: var(--background-color);
     color: var(--text-color);
-    overflow: hidden; /* 防止 body 滚动 */
+    overflow: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #app-container {
     position: relative;
-    display: flex;
+    width: 100vw;
     height: 100vh;
 }
 
-#main-content {
-    width: 100%; /* 使用百分比，使其在不同窗口大小下更灵活 */
-    margin: 0 auto; /* 保持在主内容区内水平居中 */
-    padding: 2rem;
-    text-align: center;
-}
-
-#page-quick-find {
-    height: 95%;
-    padding: 2rem;
-}
-
-/* --- 侧边栏样式 (新增) --- */
 #sidebar {
-    /* 修正：使用绝对定位，脱离文档流 */
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
@@ -77,19 +59,30 @@ body {
     z-index: 200;
 }
 
+#main-content {
+    margin-left: var(--sidebar-width-collapsed);
+    width: calc(100% - var(--sidebar-width-collapsed));
+    height: 100%;
+    overflow-y: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
 #app-container.sidebar-expanded #sidebar {
     width: var(--sidebar-width-expanded);
 }
 
+/* --- 全局组件和基础元素样式 --- */
+
+/* 侧边栏 (Sidebar) */
 .sidebar-header {
     display: flex;
     align-items: center;
-    padding: 0 18px; /* 统一左右边距 */
+    padding: 0 18px;
     height: 60px;
     flex-shrink: 0;
-    position: relative; /* 为 toggle-btn 定位 */
+    position: relative;
 }
-
 .sidebar-logo, .sidebar-logo-full {
     font-size: 1.5rem;
     font-weight: 700;
@@ -98,21 +91,15 @@ body {
     transition: opacity 0.3s ease;
     white-space: nowrap;
 }
-.sidebar-logo {
-    opacity: 1;
-}
-.sidebar-logo-full {
-    position: absolute;
-    left: 18px;
-    opacity: 0;
-}
+.sidebar-logo { opacity: 1; }
+.sidebar-logo-full { position: absolute; left: 18px; opacity: 0; }
 #app-container.sidebar-expanded .sidebar-logo { opacity: 0; }
 #app-container.sidebar-expanded .sidebar-logo-full { opacity: 1; }
 
 #sidebar-toggle-btn {
     position: absolute;
     top: 50%;
-    right: -12px; /* 按钮一半在侧边栏外 */
+    right: -12px;
     transform: translateY(-50%);
     width: 24px;
     height: 24px;
@@ -128,34 +115,29 @@ body {
     z-index: 100;
     transition: transform 0.3s ease;
 }
-
 #app-container.sidebar-expanded #sidebar-toggle-btn .icon-arrow {
     transform: rotate(180deg);
 }
-
 .nav-list {
     list-style: none;
     padding: 0;
     margin: 20px 0;
     flex-grow: 1;
 }
-
 .nav-item a {
     display: flex;
     align-items: center;
     height: 44px;
-    padding: 0 18px; /* 18px 与 logo 边距对齐 */
+    padding: 0 18px;
     text-decoration: none;
     color: var(--secondary-text-color);
     white-space: nowrap;
     overflow: hidden;
 }
-
 .nav-item a:hover {
     color: var(--text-color);
     background-color: color-mix(in srgb, var(--background-color) 50%, transparent);
 }
-
 .nav-item.active a {
     color: var(--primary-color);
     font-weight: 600;
@@ -163,34 +145,62 @@ body {
     border-left: 3px solid var(--primary-color);
     padding-left: 15px;
 }
-
 .nav-item .icon {
     flex-shrink: 0;
     width: 24px;
     height: 24px;
 }
-
 .nav-label {
     margin-left: 16px;
     opacity: 0;
     transition: opacity 0.2s ease;
 }
-
 #app-container.sidebar-expanded .nav-label {
     opacity: 1;
     transition-delay: 0.1s;
 }
 
-/* --- 主内容区样式 (基于您之前的 .container) --- */
-.container {
-    width: 95%;
-    height: 95%;
-    /* 您之前的 .container 样式大部分是有效的，这里只微调 */
-    padding: 2rem;
-    text-align: center;
+/* 主题切换按钮 (Theme Toggle) */
+#theme-toggle-btn {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    background-color: var(--container-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
 }
+#theme-toggle-btn:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.1) rotate(15deg);
+}
+#theme-toggle-btn svg {
+    color: var(--secondary-text-color);
+    transition: all 0.3s ease;
+}
+#theme-toggle-btn:hover svg {
+    color: var(--primary-color);
+}
+.sun-icon { display: none; }
+.moon-icon { display: block; }
+body.light-theme .sun-icon { display: block; }
+body.light-theme .moon-icon { display: none; }
 
-/* 您之前的所有样式，如 h1, .row, input 等，都保持不变 */
+
+/* 通用基础元素 (h1, input, button, etc) */
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
 h1 {
     font-size: 2.25rem;
     margin-bottom: 2rem;
@@ -223,12 +233,12 @@ input:focus {
     border-radius: 8px;
     cursor: pointer;
     flex-shrink: 0;
+    transition: all 0.2s ease;
 }
 #search-btn {
     color: white;
     background-color: var(--primary-color);
     border: none;
-    transition: background-color 0.2s ease;
 }
 #search-btn:hover { background-color: var(--primary-hover-color); }
 #search-btn:disabled { background-color: #4b5563; color: #9ca3af; cursor: not-allowed; }
@@ -236,179 +246,63 @@ input:focus {
     color: var(--secondary-text-color);
     background-color: transparent;
     border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
 }
 #reset-btn:hover { color: var(--text-color); border-color: var(--secondary-text-color); }
 
-#summary-output {
-    margin-bottom: 1rem;
+/* 全局浏览器样式覆盖 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    box-shadow: 0 0 0 1000px var(--input-bg-color) inset !important;
+    -webkit-text-fill-color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* --- 新增：可复用的按钮变体 --- */
+
+/* 次要按钮 (例如：浏览...) */
+.secondary-btn {
+    padding: 0.75rem 1.5rem;
     font-size: 1rem;
-    color: var(--secondary-text-color);
-    min-height: 1.5em;
-    text-align: left;
-    transition: color 0.3s ease;
-}
-.results-container {
-    background-color: var(--background-color);
+    font-weight: 600;
     border-radius: 8px;
-    border: 1px solid var(--border-color);
-    height: 60vh;
-    overflow-y: auto;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-#results-output { padding: 0.5rem; }
-.result-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* 让文本和按钮分布在两端 */
-    padding: 0.6rem 0.8rem;
-    border-radius: 6px;
-    transition: background-color 0.2s ease;
-}
-
-/* 路径文本样式 */
-.path-text {
-    font-family: 'Consolas', 'Monaco', monospace;
-    font-size: 0.9rem;
+    cursor: pointer;
+    flex-shrink: 0;
     color: var(--secondary-text-color);
-    /* 防止长路径撑破容器 */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* 超出部分显示省略号 */
-    cursor: text; /* 鼠标样式为文本，方便复制 */
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
 }
-.result-item:hover .path-text {
-    color: var(--text-color); /* 悬浮时文本更亮 */
-}
-
-/* 鼠标悬浮在整行上时，给一个背景色反馈 */
-.result-item:hover {
-    background-color: color-mix(in srgb, var(--container-bg-color) 50%, var(--background-color));
+.secondary-btn:hover {
+    color: var(--text-color);
+    border-color: var(--secondary-text-color);
 }
 
-/* “打开文件夹”按钮 */
-.open-folder-btn {
+/* 图标按钮 (例如：在文件夹中显示) */
+.icon-btn {
     background: transparent;
     border: none;
     padding: 4px;
-    margin-left: 1rem; /* 与文本保持间距 */
     border-radius: 4px;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.6; /* 默认状态下半透明 */
+    opacity: 0.6;
     transition: all 0.2s ease;
 }
-
-.result-item:hover .open-folder-btn {
-    opacity: 1; /* 行悬浮时，按钮完全显示 */
+.icon-btn:hover {
+    opacity: 1;
+    background-color: var(--primary-color);
 }
-
-.open-folder-btn:hover {
-    background-color: var(--primary-color); /* 按钮悬浮时，给一个背景色 */
-}
-
-.open-folder-btn svg {
+.icon-btn svg {
     width: 18px;
     height: 18px;
     color: var(--secondary-text-color);
     transition: color 0.2s ease;
 }
-
-.open-folder-btn:hover svg {
-    color: white; /* 按钮悬浮时，图标变白 */
-}
-
-/* --- 全局主题按钮样式 (保持不变) --- */
-#theme-toggle-btn {
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
-    background-color: var(--container-bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    padding: 0;
-    transition: all 0.3s ease;
-    z-index: 1000;
-}
-#theme-toggle-btn:hover {
-    border-color: var(--primary-color);
-    transform: scale(1.1) rotate(15deg);
-}
-
-#theme-toggle-btn svg {
-    color: var(--secondary-text-color);
-    transition: all 0.3s ease;
-}
-#theme-toggle-btn:hover svg {
-    color: var(--primary-color);
-}
-
-/* 默认显示月亮，隐藏太阳 */
-.sun-icon {
-    display: none;
-}
-.moon-icon {
-    display: block;
-}
-
-/* 亮色模式下，显示太阳，隐藏月亮 */
-body.light-theme .sun-icon {
-    display: block;
-}
-body.light-theme .moon-icon {
-    display: none;
-}
-
-/* --- 新增：处理浏览器自动填充样式，确保主题统一 --- */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-    /* 使用一个巨大的内阴影来覆盖浏览器默认的自动填充背景色 */
-    /* 这是目前最可靠的跨浏览器技巧 */
-    box-shadow: 0 0 0 1000px var(--input-bg-color) inset !important;
-
-    /* 强制设置自动填充的文本颜色 */
-    -webkit-text-fill-color: var(--text-color) !important;
-
-    /* 保持我们自定义的边框颜色 */
-    border-color: var(--border-color) !important;
-
-    /* 防止在填充时出现短暂的颜色过渡动画 */
-    transition: background-color 5000s ease-in-out 0s;
-
-
-}
-
-/* --- 新增：自定义滚动条样式，适配主题 --- */
-
-/* 目标为结果容器内的滚动条 */
-.results-container::-webkit-scrollbar {
-    width: 12px; /* 设置滚动条的宽度 */
-}
-
-/* 滚动条轨道 (背景) */
-.results-container::-webkit-scrollbar-track {
-    background: var(--background-color); /* 使用页面主背景色作为轨道背景 */
-    border-radius: 10px;
-}
-
-/* 滚动条滑块 (可以拖动的那个方块) */
-.results-container::-webkit-scrollbar-thumb {
-    background-color: var(--border-color); /* 使用边框颜色作为滑块颜色，低调且和谐 */
-    border-radius: 10px;
-    border: 3px solid var(--background-color); /* 创建一个内边距效果，让滑块看起来更细 */
-}
-
-/* 鼠标悬浮在滑块上时的样式 */
-.results-container::-webkit-scrollbar-thumb:hover {
-    background-color: var(--secondary-text-color); /* 悬浮时颜色变亮，提供反馈 */
+.icon-btn:hover svg {
+    color: white;
 }

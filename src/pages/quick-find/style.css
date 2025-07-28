@@ -1,0 +1,100 @@
+/* 这个文件现在只包含 Quick Find 页面专属的布局和组件样式 */
+
+#summary-output {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--secondary-text-color);
+    min-height: 1.5em;
+    text-align: left;
+    transition: color 0.3s ease;
+}
+
+.results-container {
+    background-color: var(--background-color);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    height: 60vh; /* 您可以根据需要调整高度 */
+    overflow-y: auto;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#results-output {
+    padding: 0.5rem;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.result-item:hover {
+    background-color: color-mix(in srgb, var(--container-bg-color) 50%, var(--background-color));
+}
+
+.path-text {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: text;
+}
+
+.result-item:hover .path-text {
+    color: var(--text-color);
+}
+
+.open-folder-btn {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    margin-left: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6;
+    transition: all 0.2s ease;
+}
+
+.result-item:hover .open-folder-btn {
+    opacity: 1;
+}
+
+.open-folder-btn:hover {
+    background-color: var(--primary-color);
+}
+
+.open-folder-btn svg {
+    width: 18px;
+    height: 18px;
+    color: var(--secondary-text-color);
+    transition: color 0.2s ease;
+}
+
+.open-folder-btn:hover svg {
+    color: white;
+}
+
+/* 页面内滚动条的专属样式 */
+.results-container::-webkit-scrollbar {
+    width: 12px;
+}
+.results-container::-webkit-scrollbar-track {
+    background: var(--background-color);
+    border-radius: 10px;
+}
+.results-container::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 10px;
+    border: 3px solid var(--background-color);
+}
+.results-container::-webkit-scrollbar-thumb:hover {
+    background-color: var(--secondary-text-color);
+}

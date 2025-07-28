@@ -32,24 +32,6 @@ document.addEventListener('click', (event) => {
     }
 });
 
-// 导航项的点击（目前只做视觉反馈，不切换页面）
-/*const navItems = document.querySelectorAll('.nav-item');
-navItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-        e.preventDefault(); // 阻止 a 标签的默认跳转行为
-
-        // 移除其他项的 active class
-        navItems.forEach(i => i.classList.remove('active'));
-        // 为当前点击项添加 active class
-        item.classList.add('active');
-
-        const page = (item as HTMLElement).dataset.page;
-        console.log(`Navigating to: ${page}`); // 之后这里会是路由切换的逻辑
-    });
-});*/
-// --- 功能函数 ---
-
-
 // 主题切换 (持久化版本)
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme') || 'dark';

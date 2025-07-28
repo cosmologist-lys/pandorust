@@ -1,4 +1,38 @@
 <div class="container">
     <h1>Project Cleanser</h1>
-    <p>This is where the new feature will live.</p>
+
+    <div class="row setup-row">
+        <input id="scan-path-input" placeholder="输入要扫描的根目录..."/>
+        <select id="project-type-selector">
+            <option value="any" selected>Any</option>
+            <option value="cargo">Cargo</option>
+            <option value="maven">Maven</option>
+        </select>
+        <button id="search-btn" >扫描</button>
+        <button id="reset-pc-btn" class="secondary-btn">重置</button>
+    </div>
+    <div class="row summary-row">
+        <div class="summary-text">
+            <p id="scan-summary">请先选择目录并开始扫描。</p>
+            <p id="selection-summary" class="selection-details"></p>
+        </div>
+        <button id="clean-btn" disabled>清理已选项</button>
+    </div>
+
+    <div class="results-table-container">
+        <table class="results-table">
+            <thead>
+            <tr>
+                <th class="col-checkbox"><input type="checkbox" id="select-all-checkbox" title="全选/全不选"/></th>
+                <th class="col-path">项目路径</th>
+                <th class="col-size">占用空间</th>
+                <th class="col-type">类型</th>
+                <th class="col-modified">最后修改</th>
+                <th class="col-actions">操作</th>
+            </tr>
+            </thead>
+            <tbody id="results-table-body">
+            </tbody>
+        </table>
+    </div>
 </div>
