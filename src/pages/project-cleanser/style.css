@@ -59,7 +59,7 @@
 }
 
 /* 结果表格样式 */
-.results-table-container {
+.results-container {
     height: 60vh;
     overflow-y: auto;
     border: 1px solid var(--border-color);
@@ -83,12 +83,12 @@
 }
 
 /* 定义列宽 */
-.col-checkbox { width: 5%; }
-.col-path { width: 45%; }
-.col-size { width: 15%; text-align: right; }
-.col-type { width: 10%; }
-.col-modified { width: 15%; }
-.col-actions { width: 10%; text-align: center; }
+.col-checkbox { width: 4%; }
+.col-path { width: 60%; } /* <-- 增加宽度 */
+.col-size { width: 12%; text-align: center; }
+.col-type { width: 8%; }
+.col-modified { width: 8%; }
+.col-actions { width: 8%; text-align: center; }
 
 .results-table td {
     color: var(--secondary-text-color);
@@ -102,9 +102,79 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 300px; /* 防止路径过长 */
+    max-width: 90%; /* 防止路径过长 */
 }
-.results-table .actions-cell .action-btn {
-    /* 这个按钮可以复用 quick-find 的 .open-folder-btn 样式 */
-    /* 我们在全局 main.css 里定义它 */
+
+
+.dialog-backdrop {
+    position: fixed; /* 固定定位，覆盖整个屏幕 */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* 确保在最上层 */
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.dialog-backdrop.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.dialog-content {
+    background-color: var(--container-bg-color);
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: scale(1);
+    transition: transform 0.2s ease;
+}
+
+.dialog-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    margin: 0 0 1rem 0;
+    color: var(--error-color);
+}
+.dialog-title svg {
+    margin-right: 0.8rem;
+    flex-shrink: 0;
+}
+
+.dialog-message {
+    margin: 0 0 2rem 0;
+    color: var(--secondary-text-color);
+    line-height: 1.6;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+/* 危险操作按钮样式 */
+.danger-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+    color: white;
+    background-color: var(--error-color);
+    border: none;
+    transition: opacity 0.2s ease;
+}
+.danger-btn:hover {
+    opacity: 0.8;
 }

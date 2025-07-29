@@ -61,7 +61,7 @@ pub struct MavenPom {
 pub struct CleanResult {
     pub path: String,
     pub occupied: String,
-    pub size: u64,
+    pub total_bytes: u64,
     pub _type: String,
     pub updated_at: String,
 }
@@ -72,6 +72,6 @@ pub struct ProjectCleanserRespond {
     pub vec: Vec<CleanResult>,
     pub count: usize,
     pub occupied: String,
-    pub total_size: u64,
+    pub total_bytes: u64,
     pub spent_millis: u128,
 }

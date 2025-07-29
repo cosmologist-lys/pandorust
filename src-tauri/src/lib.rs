@@ -41,6 +41,7 @@ fn scan_projects(root_path: String, project_type: String) -> RpcResponse<Project
 
 #[tauri::command]
 fn remove_targets(targets: Vec<CleanResult>) -> RpcResponse<ProjectCleanserRespond> {
+    println!("into remove_targets, size : {}",targets.len());
     let targets = project_cleanser::remove_targets(targets);
     match targets {
         Ok(good) => RpcResponse::ok(good),

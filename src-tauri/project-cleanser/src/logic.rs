@@ -3,7 +3,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::time::{Instant, SystemTime};
 use chrono::{DateTime, Local};
-use humansize::{format_size, DECIMAL};
+use humansize::{format_size, WINDOWS};
 use jwalk::WalkDir;
 use jwalk::rayon::iter::IntoParallelRefIterator;
 use quick_xml::de::from_str;
@@ -74,18 +74,18 @@ pub fn scan_projects(root_path: &str, target_type: &str) -> Result<ProjectCleans
 fn combine_respond(results: Vec<CleanResult>, spent_millis: u128) -> Result<ProjectCleanserRespond,PanError> {
     let count = results.len();
     // 计算总大小
-    let total_size = results.par_iter()
-        .map(|one| one.size)
+    let total_bytes = results.par_iter()
+        .map(|one| one.total_bytes)
         .sum();
 
     // 翻译成给人看的
-    let occupied = format_size(total_size,DECIMAL);
+    let occupied = format_size(total_bytes, WINDOWS);
 
     Ok(ProjectCleanserRespond {
         vec: results,
         count,
         occupied,
-        total_size,
+        total_bytes,
         spent_millis,
     })
 }
@@ -167,8 +167,8 @@ fn calculate_folder_metadata(path: &Path, project_type: &str) -> Option<CleanRes
     if total_size > 0 {
         Some(CleanResult {
             path: path.to_string_lossy().to_string(),
-            occupied: format_size(total_size, DECIMAL),
-            size: total_size,
+            occupied: format_size(total_size, WINDOWS),
+            total_bytes: total_size,
             _type: project_type.to_string(),
             updated_at: DateTime::<Local>::from(last_modified).format("%Y-%m-%d").to_string(),
         })

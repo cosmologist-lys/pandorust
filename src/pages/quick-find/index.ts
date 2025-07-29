@@ -1,3 +1,4 @@
+import {RpcResponse, FOLDER_ICON_SVG} from "../../main.ts";
 import { invoke } from "@tauri-apps/api/core";
 // 新增：从 Tauri API 中导入 shell.open 和 path.dirname
 import { revealItemInDir } from "@tauri-apps/plugin-opener";
@@ -5,17 +6,12 @@ import { revealItemInDir } from "@tauri-apps/plugin-opener";
 
 
 // --- 类型定义 (无变化) ---
-interface RpcResponse<T> {
-    status: number;
-    data: T;
-    error: string | null;
-}
+
 interface QuickFindRespond {
     vec: string[];
     count: number;
     spent_millis: number;
 }
-
 
 const convert_millis = (millis: number) => {
     if (millis < 1000) {
@@ -43,9 +39,9 @@ export function init(){
     const searchBtn = document.getElementById("search-btn") as HTMLButtonElement;
     const resetBtn = document.getElementById("reset-btn") as HTMLButtonElement;
     const summaryOutput = document.getElementById("summary-output") as HTMLDivElement;
-// 注意：现在 resultsOutput 是一个 Div 元素
+    // 注意：现在 resultsOutput 是一个 Div 元素
     const resultsOutput = document.getElementById("results-output") as HTMLDivElement;
-    const FOLDER_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`;
+
 
 
 // 修改：清理结果时，使用 innerHTML
@@ -115,7 +111,7 @@ export function init(){
 
                         // 3. 创建 "打开文件夹" 按钮
                         const openBtn = document.createElement('button');
-                        openBtn.className = 'open-folder-btn';
+                        openBtn.className = 'open-folder-btn';//'icon-btn'
                         openBtn.innerHTML = FOLDER_ICON_SVG; // 设置图标
 
                         // 4. 为按钮绑定点击事件
