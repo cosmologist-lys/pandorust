@@ -1,8 +1,9 @@
-import {RpcResponse, FOLDER_ICON_SVG} from "../../main.ts";
+import {RpcResponse} from "../../main.ts";
 import { invoke } from "@tauri-apps/api/core";
 // 新增：从 Tauri API 中导入 shell.open 和 path.dirname
 import { revealItemInDir } from "@tauri-apps/plugin-opener";
-
+// @ts-ignore
+import FOLDER_ICON_SVG from '../../assets/icons/folder.svg?raw';
 
 
 // --- 类型定义 (无变化) ---

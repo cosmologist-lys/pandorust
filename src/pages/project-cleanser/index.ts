@@ -1,6 +1,8 @@
 import { invoke } from "@tauri-apps/api/core";
-import {RpcResponse, FOLDER_ICON_SVG} from "../../main.ts";
+import {RpcResponse} from "../../main.ts";
 import { revealItemInDir } from "@tauri-apps/plugin-opener";
+// @ts-ignore
+import FOLDER_ICON_SVG from '../../assets/icons/folder.svg?raw';
 
 
 // Rust 后端的 CleanResult 结构

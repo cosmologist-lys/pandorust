@@ -189,10 +189,10 @@ body {
 #theme-toggle-btn:hover svg {
     color: var(--primary-color);
 }
-.sun-icon { display: none; }
-.moon-icon { display: block; }
-body.light-theme .sun-icon { display: block; }
-body.light-theme .moon-icon { display: none; }
+.light-icon { display: none; }
+.dark-icon { display: block; }
+body.light-theme .light-icon { display: block; }
+body.light-theme .dark-icon { display: none; }
 
 
 /* 通用基础元素 (h1, input, button, etc) */
