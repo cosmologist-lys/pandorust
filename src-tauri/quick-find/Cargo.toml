@@ -1,0 +1,12 @@
+[package]
+name = "quick-find"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+glob = "0.3.2"
+serde = { version = "1.0.219", features = ["derive"] }
+jwalk = "0.8.1"                                        # 多核心并行处理，相当于walkdir + rayon的升级版
+log = "0.4.27"
+
+pandorust-core = { path = "../pandorust-core" }

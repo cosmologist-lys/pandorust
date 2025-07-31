@@ -2605,7 +2605,7 @@ dependencies = [
  "log",
  "pandorust-core",
  "project-cleanser",
- "quick-find-core",
+ "quick-find",
  "serde",
  "serde_json",
  "tauri",
@@ -3023,7 +3023,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "quick-find-core"
+name = "quick-find"
 version = "0.1.0"
 dependencies = [
  "glob",

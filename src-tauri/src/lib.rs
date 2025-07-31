@@ -3,7 +3,7 @@
 use log::{error, info};
 use pandorust_core::components::RpcResponse;
 use project_cleanser::parts::{CleanResult, ProjectCleanserRespond};
-use quick_find_core::QuickFindRespond;
+use quick_find::QuickFindRespond;
 use tauri_plugin_log::{Target, TargetKind, TimezoneStrategy};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -40,7 +40,7 @@ async fn quick_find_search(
         root_path, glob_pattern
     );
     let search_result =
-        tokio::task::spawn_blocking(move || quick_find_core::search(&root_path, &glob_pattern))
+        tokio::task::spawn_blocking(move || quick_find::search(&root_path, &glob_pattern))
             .await
             .unwrap(); // 处理 spawn_blocking 本身的错误
     match search_result {

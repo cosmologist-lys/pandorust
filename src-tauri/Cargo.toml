@@ -15,12 +15,7 @@ name = "pandorust_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [workspace]
-members = [
-    ".",
-    "pandorust-core",
-    "project-cleanser",
-    "quick-find-core",
-]
+members = [".", "pandorust-core", "project-cleanser", "quick-find"]
 
 [build-dependencies]
 tauri-build = { version = "2.3.1", features = [] }
@@ -35,6 +30,5 @@ log = "0.4.27"
 tauri-plugin-log = "2.6.0"
 
 pandorust-core = { path = "pandorust-core" }
-quick-find-core = { path = "quick-find-core" }
-project-cleanser = {path = "project-cleanser"}
-
+quick-find = { path = "quick-find" }
+project-cleanser = { path = "project-cleanser" }
