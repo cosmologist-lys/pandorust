@@ -1,0 +1,26 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <!-- 左耳朵 -->
+        <path d="M 40,80 C 10,110 50,140 65,110" fill="red"/>
+
+        <!-- 右耳朵 -->
+        <path d="M 160,80 C 190,110 150,140 135,110" fill="red"/>
+
+        <!-- 脸部 -->
+        <path d="M 50,70 C 50,30 150,30 150,70 C 160,130 100,150 40,130 C 50,110 50,90 50,70 Z" fill="lightblue"/>
+
+        <!-- 左眼 -->
+        <circle cx="80" cy="90" r="8" fill="black"/>
+        <circle cx="82" cy="88" r="2" fill="white"/>
+
+        <!-- 右眼 -->
+        <circle cx="120" cy="90" r="8" fill="black"/>
+        <circle cx="122" cy="88" r="2" fill="white"/>
+
+        <!-- 鼻子 -->
+        <ellipse cx="100" cy="115" rx="10" ry="7" fill="black"/>
+
+        <!-- 嘴巴 -->
+        <path d="M 90,130 Q 100,140 110,130" stroke="black" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </g>
+</svg>
