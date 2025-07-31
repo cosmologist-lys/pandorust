@@ -12,5 +12,6 @@ serde = { version = "1.0.219", features = ["derive"] }
 humansize = "2.1.3"
 jwalk = "0.8.1"     # 多核心并行处理，相当于walkdir + rayon的升级版
 chrono = "0.4.41"
+log = "0.4.27"
 
 pandorust-core = { path = "../pandorust-core" }

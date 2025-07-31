@@ -1,15 +1,16 @@
+use crate::parts::{CleanResult, MavenPom, ProjectCleanserRespond, ProjectType};
+use chrono::{DateTime, Local};
+use humansize::{WINDOWS, format_size};
+use jwalk::WalkDir;
+use jwalk::rayon::iter::IntoParallelRefIterator;
 use jwalk::rayon::iter::{IntoParallelIterator, ParallelIterator};
+use log::{error, info};
+use pandorust_core::common_err;
+use pandorust_core::custom_err::PanError;
+use quick_xml::de::from_str;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::time::{Instant, SystemTime};
-use chrono::{DateTime, Local};
-use humansize::{format_size, WINDOWS};
-use jwalk::WalkDir;
-use jwalk::rayon::iter::IntoParallelRefIterator;
-use quick_xml::de::from_str;
-use pandorust_core::common_err;
-use pandorust_core::custom_err::PanError;
-use crate::parts::{CleanResult, MavenPom, ProjectCleanserRespond, ProjectType};
 
 /// 主清理函数，负责接收前端选中的项目列表并执行删除。
 /// 它返回一个 ProjectCleanserRespond，其中只包含成功删除的项目。
@@ -17,27 +18,34 @@ pub fn clean_junk(items_to_clean: Vec<CleanResult>) -> Result<ProjectCleanserRes
     let start_time = Instant::now();
 
     // --- 并行删除选中的目录 ---
-    let (successfully_cleaned, failed_to_clean): (Vec<CleanResult>, Vec<CleanResult>) = items_to_clean
+    let (successfully_cleaned, _): (Vec<CleanResult>, Vec<CleanResult>) = items_to_clean
         .into_par_iter() // 使用 Rayon 并行迭代
         .partition(|item| {
             match fs::remove_dir_all(&item.path) {
                 Ok(_) => {
                     // 删除成功
+                    info! { "project-cleanser:[clean_junk] successfully remove dir : {}",&item.path}
                     true
-                },
+                }
                 Err(e) => {
                     // 删除失败，在后端打印日志，方便调试
-                    eprintln!("Failed to delete directory [{}]: {}", item.path, e);
+                    error!(
+                        "project-cleanser:[clean_junk] failed by dir : {} , error : {}",
+                        &item.path, e
+                    );
                     false
                 }
             }
         });
 
-    combine_respond(successfully_cleaned,start_time.elapsed().as_millis())
+    combine_respond(successfully_cleaned, start_time.elapsed().as_millis())
 }
 
 /// 主入口函数，负责编排整个扫描流程
-pub fn scan_projects(root_path: &str, target_type: &str) -> Result<ProjectCleanserRespond, PanError> {
+pub fn scan_projects(
+    root_path: &str,
+    target_type: &str,
+) -> Result<ProjectCleanserRespond, PanError> {
     let start_time = Instant::now();
     let project_type = ProjectType::mapping(target_type);
 
@@ -57,26 +65,33 @@ pub fn scan_projects(root_path: &str, target_type: &str) -> Result<ProjectCleans
         .map(|entry| entry.path())
         .collect();
 
+    info!(
+        "project-cleanser:[scan_projects] find projects size : {}",
+        project_manifests.len()
+    );
+
     // --- 阶段二: 并行处理已发现的项目，查找并分析 "垃圾" 文件夹 ---
     let results: Vec<CleanResult> = project_manifests
         .par_iter()
-        .flat_map(|manifest_path| {
-            process_project(manifest_path).unwrap_or_else(|_err| {
-                Vec::new()
-            })
-        })
+        .flat_map(|manifest_path| process_project(manifest_path).unwrap_or_else(|_err| Vec::new()))
         .collect();
 
-    combine_respond(results,start_time.elapsed().as_millis())
+    info!(
+        "project-cleanser:[scan_projects] find projects with junk size : {}",
+        project_manifests.len()
+    );
+
+    combine_respond(results, start_time.elapsed().as_millis())
 }
 
 // 组合返回对象
-fn combine_respond(results: Vec<CleanResult>, spent_millis: u128) -> Result<ProjectCleanserRespond,PanError> {
+fn combine_respond(
+    results: Vec<CleanResult>,
+    spent_millis: u128,
+) -> Result<ProjectCleanserRespond, PanError> {
     let count = results.len();
     // 计算总大小
-    let total_bytes = results.par_iter()
-        .map(|one| one.total_bytes)
-        .sum();
+    let total_bytes = results.par_iter().map(|one| one.total_bytes).sum();
 
     // 翻译成给人看的
     let occupied = format_size(total_bytes, WINDOWS);
@@ -170,7 +185,9 @@ fn calculate_folder_metadata(path: &Path, project_type: &str) -> Option<CleanRes
             occupied: format_size(total_size, WINDOWS),
             total_bytes: total_size,
             _type: project_type.to_string(),
-            updated_at: DateTime::<Local>::from(last_modified).format("%Y-%m-%d").to_string(),
+            updated_at: DateTime::<Local>::from(last_modified)
+                .format("%Y-%m-%d")
+                .to_string(),
         })
     } else {
         None

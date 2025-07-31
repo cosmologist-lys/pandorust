@@ -1,5 +1,6 @@
 use glob::Pattern;
 use jwalk::WalkDir;
+use log::info;
 use pandorust_core::common_err;
 use pandorust_core::custom_err::PanError;
 use serde::{Deserialize, Serialize};
@@ -27,6 +28,13 @@ pub fn search(root_path: &str, glob_patter: &str) -> Result<QuickFindRespond, Pa
     } else {
         None
     };
+
+    if simple_suffix.is_some() {
+        info!(
+            "quick-find:[search] glob-suffix = {}",
+            simple_suffix.unwrap()
+        );
+    }
 
     let search_result: Vec<String> = if let Some(suffix) = simple_suffix {
         // --- 针对 "*.ext" 模式的特化、高速路径 ---
