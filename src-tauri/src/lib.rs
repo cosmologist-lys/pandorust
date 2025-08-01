@@ -3,7 +3,7 @@
 use log::{error, info};
 use pandorust_core::components::RpcResponse;
 use project_cleanser::parts::{CleanResult, ProjectCleanserRespond};
-use quick_find::QuickFindRespond;
+use quick_find::parts::QuickFindRespond;
 use tauri_plugin_log::{Target, TargetKind, TimezoneStrategy};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
