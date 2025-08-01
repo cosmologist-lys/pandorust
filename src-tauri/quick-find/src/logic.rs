@@ -11,13 +11,13 @@ pub fn search(root_path: &str, glob_patter: &str) -> Result<QuickFindRespond, Pa
     let input = glob_patter.trim();
 
     let walker = WalkDir::new(root_path.trim()).follow_links(false);
-    // 1. 判断输入是否包含glob通配符
+    // 1. 判断输入是否包含glob通配符(只要是符合glob通配符规则的都会进入第一个if)
     let simple_suffix = if input.starts_with("*.")
         && !input[2..].contains('*')
         && !input[2..].contains('?')
         && !input[2..].contains('[')
     {
-        Some(&input[2..]) // 如果是，提取后缀 "dll"
+        Some(&input[1..]) // 如果是，提取后缀 ".dll"
     } else {
         None
     };
